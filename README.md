@@ -5,7 +5,7 @@ The source code is not published here. The CLI requires an Akkari account.
 
 ## Install
 
-    curl -fsSL https://raw.githubusercontent.com/tekara-inc/akkari-cli-releases/main/install.sh | sh
+    curl -fsSL https://app.akkari.io/install.sh | sh
 
 The installer places versioned binaries under `~/.config/akkari/cli/` and links `~/.local/bin/akkari`.
 Set `AKKARI_INSTALL_VERSION=<version>` to install a specific release and `AKKARI_NO_MODIFY_PATH=1` to leave shell files alone.

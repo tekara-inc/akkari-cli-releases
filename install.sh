@@ -1,6 +1,6 @@
 #!/bin/sh
 # Akkari CLI installer. Everything runs inside main() so a truncated download executes nothing.
-# Usage: curl -fsSL https://raw.githubusercontent.com/tekara-inc/akkari-cli-releases/main/install.sh | sh
+# Usage: curl -fsSL https://app.akkari.io/install.sh | sh
 # Environment: AKKARI_INSTALL_VERSION (default latest), AKKARI_CONFIG_DIR (parent of the akkari home),
 #              AKKARI_RELEASES_BASE_URL (default GitHub releases), AKKARI_NO_MODIFY_PATH (skip shell rc edits).
 set -eu
