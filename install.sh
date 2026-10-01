@@ -16,7 +16,8 @@ main() {
   if [ -n "${AKKARI_INSTALL_VERSION:-}" ]; then
     version="$AKKARI_INSTALL_VERSION"
   else
-    fetch "$base/latest/download/manifest.json" "$work/manifest.json"
+    # A unique query skips GitHub's cached /latest/download right after a release.
+    fetch "$base/latest/download/manifest.json?t=$(date +%s)" "$work/manifest.json"
     version="$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' "$work/manifest.json" | head -n 1)"
     [ -n "$version" ] || fail "could not determine the latest version"
   fi
