@@ -9,9 +9,10 @@ main() {
   base="${AKKARI_RELEASES_BASE_URL:-https://github.com/tekara-inc/akkari-cli-releases/releases}"
   base="${base%/}"
   if [ -n "${AKKARI_CONFIG_DIR:-}" ]; then home="$AKKARI_CONFIG_DIR/akkari"; else home="$HOME/.config/akkari"; fi
-  platform="$(detect_platform)"
   work="$(mktemp -d "${TMPDIR:-/tmp}/akkari-install.XXXXXX")"
   trap 'rm -rf "$work"' EXIT INT TERM
+  case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) install_windows "$base" "$work"; return ;; esac
+  platform="$(detect_platform)"
 
   if [ -n "${AKKARI_INSTALL_VERSION:-}" ]; then
     version="$AKKARI_INSTALL_VERSION"
@@ -73,6 +74,17 @@ detect_platform() {
     *) fail "unsupported architecture: $arch" ;;
   esac
   printf '%s-%s\n' "$os" "$arch"
+}
+
+# Git Bash (how Claude Code runs commands on Windows), MSYS and Cygwin: hand off to the PowerShell
+# installer from the same release, which owns the Windows layout (akkari.exe, junction, user PATH).
+install_windows() {
+  command -v powershell.exe >/dev/null 2>&1 || fail "powershell.exe is required to install on Windows"
+  if [ -n "${AKKARI_INSTALL_VERSION:-}" ]; then url="$1/download/v$AKKARI_INSTALL_VERSION/install.ps1"; else url="$1/latest/download/install.ps1"; fi
+  say "Windows detected; running the PowerShell installer"
+  fetch "$url" "$2/install.ps1"
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w "$2/install.ps1")" || fail "the PowerShell installer failed"
+  say "Open a new terminal for akkari to be on PATH, or run it by the full path printed above."
 }
 
 fetch() {

@@ -1,13 +1,17 @@
 # Akkari CLI releases
 
-Binary releases of the Akkari command-line interface for macOS (Apple Silicon and Intel) and Linux (x64 and arm64).
+Binary releases of the Akkari command-line interface for macOS (Apple Silicon and Intel), Linux (x64 and arm64) and Windows (x64).
 The source code is not published here. The CLI requires an Akkari account.
 
 ## Install
 
     curl -fsSL https://app.akkari.io/install.sh | sh
 
-The installer places versioned binaries under `~/.config/akkari/cli/` and links `~/.local/bin/akkari`.
+On Windows, in PowerShell:
+
+    irm https://app.akkari.io/install.ps1 | iex
+
+The installer places versioned binaries under `~/.config/akkari/cli/` and links `~/.local/bin/akkari`. On Windows it adds `%USERPROFILE%\.config\akkari\cli\current` to the user PATH.
 Set `AKKARI_INSTALL_VERSION=<version>` to install a specific release and `AKKARI_NO_MODIFY_PATH=1` to leave shell files alone.
 
 ## Update
