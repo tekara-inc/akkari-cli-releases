@@ -22,7 +22,7 @@ Set `AKKARI_INSTALL_VERSION=<version>` to install a specific release and `AKKARI
 
 ## Verify a download
 
-Each release carries `SHA256SUMS` and a `manifest.json` signed with minisign (`manifest.json.minisig`). The CLI verifies the manifest with its embedded public key on every update; you can verify by hand with `sha256sum -c SHA256SUMS`.
+Each release carries `SHA256SUMS` and a `manifest-v2.json` signed with minisign (`manifest-v2.json.minisig`). `manifest.json` is the same signed manifest without Windows, for akkari 0.63.0 and earlier. The CLI verifies the manifest with its embedded public key on every update; you can verify by hand with `sha256sum -c SHA256SUMS`.
 
 ## Support
 
