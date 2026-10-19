@@ -39,7 +39,11 @@ function Install-Akkari {
     $line = Get-Content (Join-Path $work 'SHA256SUMS') | Where-Object { $_ -match "^([a-f0-9]{64})  $([regex]::Escape("$name.tar.gz"))$" } | Select-Object -First 1
     if (-not $line) { Fail "SHA256SUMS has no entry for $name.tar.gz" }
     $expected = $line.Substring(0, 64)
-    $actual = (Get-FileHash -Algorithm SHA256 $tarball).Hash.ToLowerInvariant()
+    # Not Get-FileHash: Windows PowerShell 5.1 defines it in a script module, which goes missing when an
+    # inherited PSModulePath points at PowerShell 7's modules (Git Bash started from pwsh, as under Claude Code).
+    $stream = [IO.File]::OpenRead($tarball)
+    try { $actual = ([BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($stream)) -replace '-', '').ToLowerInvariant() }
+    finally { $stream.Dispose() }
     if ($actual -ne $expected) { Fail "checksum mismatch for $name.tar.gz" }
 
     $cli = Join-Path $akkariHome 'cli'
